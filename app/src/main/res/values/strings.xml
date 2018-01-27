@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MPGP Chat</string>
+    <string name="login_hint">никнейм</string>
+    <string name="email_hint">e-mail</string>
+    <string name="reg_button">ЗАРЕГИСТРИРОВАТЬСЯ</string>
+    <string name="link"><u>MPGP Project</u></string>
+</resources>
