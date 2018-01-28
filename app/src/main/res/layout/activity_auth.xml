@@ -23,38 +23,53 @@
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/login"
-            android:layout_above="@id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@id/email"
             android:gravity="center"
-            android:hint="@string/login_hint" />
+            android:hint="@string/login_hint"
+            android:textSize="@dimen/sp_16" />
 
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/email"
-            android:text="test@mail.ru"
-            android:layout_above="@id/regBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@id/regBtn"
             android:gravity="center"
-            android:hint="@string/email_hint" />
+            android:hint="@string/email_hint"
+            android:textSize="@dimen/sp_16" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/regBtn"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            style="@style/Base.Widget.AppCompat.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/reg_button" />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/reg_button"
+            android:textSize="@dimen/sp_14" />
 
         <android.support.v7.widget.AppCompatTextView
-            style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
-            android:id="@+id/error"
+            android:id="@+id/recoverBtn"
+            android:padding="@dimen/dp_12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/regBtn"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/recover_button"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/sp_12" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/recoverBtn"
             android:gravity="center"
             android:textColor="@color/colorRed"
-            android:visibility="gone" />
+            android:textSize="@dimen/sp_12"
+            android:visibility="visible" />
 
     </RelativeLayout>
 
