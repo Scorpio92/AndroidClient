@@ -33,12 +33,12 @@ public class AuthorizeUsecase extends AbstractUsecase {
     public void run() {
         new GetServerKeyNetRepo(new GetServerKeyNetRepo.Callback() {
             @Override
-            public void onSuccess(String serverPublicKeyId, String serverPublicKey) {
+            public void onSuccess(String serverPublicKey) {
                 try {
                     KeyPair keyPair = RSA.buildKeyPair(RSA.KEY_2048_BIT);
                     AuthorizePayload authorizePayload = new AuthorizePayload(localStorage.getDataFromFile(LocalStorage.AUTH_TOKEN_STORAGE));
                     AuthorizeMessage authorizeMessage = new AuthorizeMessage(
-                            serverPublicKeyId,
+                            new SHA(serverPublicKey).getHash(SHA.GET_SHA1_OF_STRING),
                             serverPublicKey,
                             RSA.covertKeyToString(keyPair.getPublic()),
                             authorizePayload

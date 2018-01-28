@@ -14,6 +14,7 @@ import ru.scorpio92.mpgp.domain.usecase.base.AbstractUsecase;
 import ru.scorpio92.mpgp.domain.usecase.base.IUsecaseBaseCallback;
 import ru.scorpio92.mpgp.util.LocalStorage;
 import ru.scorpio92.mpgp.util.crypto.RSA;
+import ru.scorpio92.mpgp.util.crypto.SHA;
 
 public class RegisterUsecase extends AbstractUsecase {
 
@@ -32,12 +33,12 @@ public class RegisterUsecase extends AbstractUsecase {
     public void run() {
         new GetServerKeyNetRepo(new GetServerKeyNetRepo.Callback() {
             @Override
-            public void onSuccess(String serverPublicKeyId, String serverPublicKey) {
+            public void onSuccess(String serverPublicKey) {
                 try {
                     RegisterPayload registerPayload = new RegisterPayload(login, "test@mail.ru");
                     KeyPair keyPair = RSA.buildKeyPair(RSA.KEY_2048_BIT);
                     RegisterMessage registerMessage = new RegisterMessage(
-                            serverPublicKeyId,
+                            new SHA(serverPublicKey).getHash(SHA.GET_SHA1_OF_STRING),
                             serverPublicKey,
                             RSA.covertKeyToString(keyPair.getPublic()),
                             registerPayload

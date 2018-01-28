@@ -18,7 +18,7 @@ import ru.scorpio92.mpgp.util.JsonWorker;
 public class GetServerKeyNetRepo extends NetworkRepository implements INetworkRepository {
 
     public interface Callback {
-        void onSuccess(String serverPublicKeyId, String serverPublicKey);
+        void onSuccess(String serverPublicKey);
 
         void onError(Exception e);
     }
@@ -41,7 +41,7 @@ public class GetServerKeyNetRepo extends NetworkRepository implements INetworkRe
                         case SUCCESS:
                             GetServerPublicKeyPayload getServerPublicKeyPayload = getServerKeyMsg.getPayload();
                             if (callback != null)
-                                callback.onSuccess(getServerPublicKeyPayload.getServerPublicKeyId(), getServerPublicKeyPayload.getServerPublicKey());
+                                callback.onSuccess(getServerPublicKeyPayload.getServerPublicKey());
                             break;
                         case ERROR:
                             if (callback != null) {

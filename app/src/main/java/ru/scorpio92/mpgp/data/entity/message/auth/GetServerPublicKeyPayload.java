@@ -8,12 +8,7 @@ import ru.scorpio92.mpgp.data.entity.message.base.Payload;
 
 public class GetServerPublicKeyPayload extends Payload {
 
-    private String ServerPublicKeyId;
     private String ServerPublicKey;
-
-    public String getServerPublicKeyId() {
-        return ServerPublicKeyId;
-    }
 
     public String getServerPublicKey() {
         return ServerPublicKey;
