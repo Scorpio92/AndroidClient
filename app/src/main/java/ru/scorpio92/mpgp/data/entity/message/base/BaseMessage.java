@@ -19,29 +19,29 @@ public abstract class BaseMessage {
         ERROR
     }
 
-    protected String type;
-    protected String status;
-    protected String errorCode;
-    protected String payload;
+    protected String Type;
+    protected String Status;
+    protected String ErrorCode;
+    protected String Payload;
 
     public BaseMessage() {
     }
 
     public BaseMessage(MessageType type, String payload) {
-        this.type = type.name();
-        this.payload = payload;
+        this.Type = type.name();
+        this.Payload = payload;
     }
 
     public MessageType getType() {
-        return Enum.valueOf(MessageType.class, type);
+        return Enum.valueOf(MessageType.class, Type);
     }
 
     public Status getStatus() {
-        return Enum.valueOf(Status.class, status);
+        return Enum.valueOf(Status.class, Status);
     }
 
     public String getErrorCode() {
-        return errorCode;
+        return ErrorCode;
     }
 
     @Override

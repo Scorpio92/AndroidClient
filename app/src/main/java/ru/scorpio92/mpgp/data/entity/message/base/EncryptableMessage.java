@@ -10,16 +10,16 @@ import ru.scorpio92.mpgp.util.crypto.RSA;
 
 public abstract class EncryptableMessage extends BaseMessage {
 
-    private String serverPublicKeyId;
-    private String clientPublicKey;
+    private String ServerPublicKeyId;
+    private String ClientPublicKey;
 
     public EncryptableMessage(MessageType type, String serverPublicKeyId, String serverPublicKey, String clientPublicKey, EncryptablePayload payload) throws Exception {
         super(type, payload.getEncryptedString(serverPublicKey));
-        this.serverPublicKeyId = serverPublicKeyId;
-        this.clientPublicKey = clientPublicKey;
+        this.ServerPublicKeyId = serverPublicKeyId;
+        this.ClientPublicKey = clientPublicKey;
     }
 
     protected String getDecryptedPayloadString(PrivateKey privateKey) throws Exception {
-        return RSA.decryptFromBase64(privateKey, payload);
+        return RSA.decryptFromBase64(privateKey, Payload);
     }
 }

@@ -9,15 +9,15 @@ import ru.scorpio92.mpgp.data.entity.message.base.EncryptablePayload;
 
 public class AuthorizePayload extends EncryptablePayload {
 
-    private String sessionKey;
+    private String SessionKey;
 
-    private String authToken;
+    private String AuthToken;
 
     public AuthorizePayload(String authToken) {
-        this.authToken = authToken;
+        this.AuthToken = authToken;
     }
 
     public String getSessionKey() {
-        return sessionKey;
+        return SessionKey;
     }
 }

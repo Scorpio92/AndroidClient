@@ -16,6 +16,6 @@ public class GetServerPublicKeyMessage extends Message implements IMessage<GetSe
 
     @Override
     public GetServerPublicKeyPayload getPayload() throws Exception {
-        return JsonWorker.getDeserializeJson(payload, GetServerPublicKeyPayload.class);
+        return JsonWorker.getDeserializeJson(Payload, GetServerPublicKeyPayload.class);
     }
 }
