@@ -38,7 +38,7 @@ public class AuthorizeUsecase extends AbstractUsecase {
                     KeyPair keyPair = RSA.buildKeyPair(RSA.KEY_2048_BIT);
                     AuthorizePayload authorizePayload = new AuthorizePayload(localStorage.getDataFromFile(LocalStorage.AUTH_TOKEN_STORAGE));
                     AuthorizeMessage authorizeMessage = new AuthorizeMessage(
-                            new SHA(serverPublicKey).getHash(SHA.GET_SHA1_OF_STRING),
+                            SHA.getSHA1ofString(serverPublicKey),
                             serverPublicKey,
                             RSA.covertKeyToString(keyPair.getPublic()),
                             authorizePayload
@@ -48,7 +48,7 @@ public class AuthorizeUsecase extends AbstractUsecase {
                         @Override
                         public void onAuthorized(String sessionKey, String iv) {
                             try {
-                                String sessionKeyId = new SHA(sessionKey).getHash(SHA.GET_SHA1_OF_STRING);
+                                String sessionKeyId = SHA.getSHA1ofString(sessionKey);
                                 SessionKey sessionKeyObj = new SessionKey(sessionKeyId, sessionKey, iv);
                                 localStorage.setDataInFile(LocalStorage.SESSION_KEY_STORAGE, JsonWorker.getSerializeJson(sessionKeyObj));
                                 if(callback != null) {

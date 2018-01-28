@@ -38,7 +38,7 @@ public class RegisterUsecase extends AbstractUsecase {
                     RegisterPayload registerPayload = new RegisterPayload(login, "test@mail.ru");
                     KeyPair keyPair = RSA.buildKeyPair(RSA.KEY_2048_BIT);
                     RegisterMessage registerMessage = new RegisterMessage(
-                            new SHA(serverPublicKey).getHash(SHA.GET_SHA1_OF_STRING),
+                            SHA.getSHA1ofString(serverPublicKey),
                             serverPublicKey,
                             RSA.covertKeyToString(keyPair.getPublic()),
                             registerPayload
