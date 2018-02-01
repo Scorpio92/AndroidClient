@@ -37,7 +37,7 @@ public class WS {
         if(webSocketClient == null || !webSocketClient.isOpen()) {
             URI uri;
             try {
-                uri = new URI("ws://" + Constants.MAIN_SERVER + ":" + Constants.MAIN_SERVER_PORT);
+                uri = new URI("ws://" + Constants.WEBSOCKET_SERVER + ":" + Constants.WEBSOCKET_SERVER_PORT);
             } catch (URISyntaxException e) {
                 Logger.error(e);
                 return;

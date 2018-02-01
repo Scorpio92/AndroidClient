@@ -1,8 +1,14 @@
 <resources>
     <string name="app_name">MPGP Chat</string>
+
+    <!--регистрация и авторизация-->
     <string name="login_hint">никнейм</string>
     <string name="email_hint">e-mail</string>
     <string name="reg_button">ЗАРЕГИСТРИРОВАТЬСЯ</string>
     <string name="recover_button"><u>уже есть аккаунт?</u></string>
     <string name="link"><u>MPGP Project</u></string>
+
+    <!--подключение к сокет серверу-->
+    <string name="connection_header">Выберите сервер для подключения</string>
+
 </resources>
