@@ -37,6 +37,7 @@
             android:layout_above="@id/regBtn"
             android:gravity="center"
             android:hint="@string/email_hint"
+            android:visibility="gone"
             android:textSize="@dimen/sp_16" />
 
         <android.support.v7.widget.AppCompatButton

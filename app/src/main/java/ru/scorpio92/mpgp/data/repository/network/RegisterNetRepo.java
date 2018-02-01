@@ -96,4 +96,9 @@ public class RegisterNetRepo extends NetworkRepository implements INetworkReposi
             }
         });
     }
+
+    @Override
+    public void cancel() {
+        callback = null;
+    }
 }

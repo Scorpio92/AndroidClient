@@ -75,4 +75,9 @@ public class GetServerKeyNetRepo extends NetworkRepository implements INetworkRe
             }
         });
     }
+
+    @Override
+    public void cancel() {
+        callback = null;
+    }
 }

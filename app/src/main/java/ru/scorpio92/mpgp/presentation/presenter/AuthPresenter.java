@@ -29,22 +29,7 @@ public class AuthPresenter extends AbstractPresenter<IAuthActivity> implements I
     @Override
     public void checkAuthState() {
         if (localStorage.fileExist(LocalStorage.AUTH_TOKEN_STORAGE)) {
-            showProgressInView();
-
-            authorizeUsecase = new AuthorizeUsecase(ThreadExecutor.getInstance(true), MainThread.getInstance(), localStorage, new AuthorizeUsecase.Callback() {
-                @Override
-                public void onAuthorized() {
-                    if (viewIsReady())
-                        getView().onSuccessAuth();
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    hideProgressInView();
-                    handleError(e);
-                }
-            });
-            authorizeUsecase.execute();
+            authorize();
         }
     }
 
@@ -73,6 +58,27 @@ public class AuthPresenter extends AbstractPresenter<IAuthActivity> implements I
         registerUsecase.execute();
 
     }
+
+    @Override
+    public void authorize() {
+        showProgressInView();
+
+        authorizeUsecase = new AuthorizeUsecase(ThreadExecutor.getInstance(true), MainThread.getInstance(), localStorage, new AuthorizeUsecase.Callback() {
+            @Override
+            public void onAuthorized() {
+                if (viewIsReady())
+                    getView().onSuccessAuth();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                hideProgressInView();
+                handleError(e);
+            }
+        });
+        authorizeUsecase.execute();
+    }
+
 
     @Override
     public void onDestroy() {

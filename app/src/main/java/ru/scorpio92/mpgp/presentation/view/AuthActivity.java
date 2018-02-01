@@ -27,6 +27,7 @@ public class AuthActivity extends AbstractActivity<IAuthPresenter> implements IA
 
     private ProgressBar progressBar;
     private RelativeLayout authContainer;
+    private AppCompatEditText login;
     private AppCompatTextView tvError;
 
     @Override
@@ -53,18 +54,16 @@ public class AuthActivity extends AbstractActivity<IAuthPresenter> implements IA
 
         tvError = findViewById(R.id.error);
 
-        AppCompatEditText login = findViewById(R.id.login);
+        login = findViewById(R.id.login);
         login.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                hideKeyboard();
-                getPresenter().register(login.getText().toString().trim());
+                register();
             }
             return false;
         });
 
         findViewById(R.id.regBtn).setOnClickListener(v -> {
-            hideKeyboard();
-            getPresenter().register(login.getText().toString().trim());
+            register();
         });
 
         findViewById(R.id.link).setOnClickListener(v -> {
@@ -74,9 +73,15 @@ public class AuthActivity extends AbstractActivity<IAuthPresenter> implements IA
         });
     }
 
+    private void register() {
+        hideKeyboard();
+        getPresenter().register(login.getText().toString().trim());
+    }
+
     @Override
     public void onSuccessReg() {
         showToast("Регистрация успешно пройдена!");
+        getPresenter().authorize();
     }
 
     @Override

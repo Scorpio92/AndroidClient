@@ -7,4 +7,6 @@ package ru.scorpio92.mpgp.data.repository.network.core;
 public interface INetworkRepository {
 
     void execute(RequestSpecification requestSpecification);
+
+    void cancel();
 }

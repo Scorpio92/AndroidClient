@@ -9,4 +9,6 @@ public interface IAuthPresenter extends IBasePresenter {
     void checkAuthState();
 
     void register(String username);
+
+    void authorize();
 }

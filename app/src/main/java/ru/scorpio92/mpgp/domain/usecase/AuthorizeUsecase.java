@@ -8,6 +8,7 @@ import ru.scorpio92.mpgp.data.entity.message.auth.AuthorizePayload;
 import ru.scorpio92.mpgp.data.entity.message.auth.GetServerPublicKeyMessage;
 import ru.scorpio92.mpgp.data.repository.network.AuthorizeNetRepo;
 import ru.scorpio92.mpgp.data.repository.network.GetServerKeyNetRepo;
+import ru.scorpio92.mpgp.data.repository.network.core.INetworkRepository;
 import ru.scorpio92.mpgp.data.repository.network.specifications.AuthSpecification;
 import ru.scorpio92.mpgp.domain.threading.base.IExecutor;
 import ru.scorpio92.mpgp.domain.threading.base.IMainThread;
@@ -22,6 +23,7 @@ public class AuthorizeUsecase extends AbstractUsecase {
 
     private Callback callback;
     private LocalStorage localStorage;
+    private INetworkRepository repository;
 
     public AuthorizeUsecase(IExecutor executor, IMainThread mainThread, LocalStorage localStorage, Callback callback) {
         super(executor, mainThread);
@@ -31,47 +33,14 @@ public class AuthorizeUsecase extends AbstractUsecase {
 
     @Override
     public void run() {
-        new GetServerKeyNetRepo(new GetServerKeyNetRepo.Callback() {
+        getServerKey();
+    }
+
+    private void getServerKey() {
+        repository = new GetServerKeyNetRepo(new GetServerKeyNetRepo.Callback() {
             @Override
             public void onSuccess(String serverPublicKey) {
-                try {
-                    KeyPair keyPair = RSA.buildKeyPair(RSA.KEY_2048_BIT);
-                    AuthorizePayload authorizePayload = new AuthorizePayload(localStorage.getDataFromFile(LocalStorage.AUTH_TOKEN_STORAGE));
-                    AuthorizeMessage authorizeMessage = new AuthorizeMessage(
-                            SHA.getSHA1ofString(serverPublicKey),
-                            serverPublicKey,
-                            RSA.covertKeyToString(keyPair.getPublic()),
-                            authorizePayload
-                    );
-
-                    new AuthorizeNetRepo(keyPair.getPrivate(), new AuthorizeNetRepo.Callback() {
-                        @Override
-                        public void onAuthorized(String sessionKey, String iv) {
-                            try {
-                                String sessionKeyId = SHA.getSHA1ofString(sessionKey);
-                                SessionKey sessionKeyObj = new SessionKey(sessionKeyId, sessionKey, iv);
-                                localStorage.setDataInFile(LocalStorage.SESSION_KEY_STORAGE, JsonWorker.getSerializeJson(sessionKeyObj));
-                                if(callback != null) {
-                                    runOnUI(() -> callback.onAuthorized());
-                                }
-                            } catch (Exception e) {
-                                if(callback != null)
-                                    runOnUI(() -> callback.onError(e));
-                            }
-
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            if(callback != null)
-                                runOnUI(() -> callback.onError(e));
-                        }
-                    }).execute(new AuthSpecification(authorizeMessage));
-
-                } catch (Exception e) {
-                    if(callback != null)
-                        runOnUI(() -> callback.onError(e));
-                }
+                authorize(serverPublicKey);
             }
 
             @Override
@@ -79,12 +48,57 @@ public class AuthorizeUsecase extends AbstractUsecase {
                 if(callback != null)
                     runOnUI(() -> callback.onError(e));
             }
-        }).execute(new AuthSpecification(new GetServerPublicKeyMessage()));
+        });
+        repository.execute(new AuthSpecification(new GetServerPublicKeyMessage()));
+    }
+
+    private void authorize(String serverPublicKey) {
+        try {
+            KeyPair keyPair = RSA.buildKeyPair(RSA.KEY_2048_BIT);
+            AuthorizePayload authorizePayload = new AuthorizePayload(localStorage.getDataFromFile(LocalStorage.AUTH_TOKEN_STORAGE));
+            AuthorizeMessage authorizeMessage = new AuthorizeMessage(
+                    SHA.getSHA1ofString(serverPublicKey),
+                    serverPublicKey,
+                    RSA.covertKeyToString(keyPair.getPublic()),
+                    authorizePayload
+            );
+
+            repository = new AuthorizeNetRepo(keyPair.getPrivate(), new AuthorizeNetRepo.Callback() {
+                @Override
+                public void onAuthorized(String sessionKey, String iv) {
+                    try {
+                        String sessionKeyId = SHA.getSHA1ofString(sessionKey);
+                        SessionKey sessionKeyObj = new SessionKey(sessionKeyId, sessionKey, iv);
+                        localStorage.setDataInFile(LocalStorage.SESSION_KEY_STORAGE, JsonWorker.getSerializeJson(sessionKeyObj));
+                        if(callback != null) {
+                            runOnUI(() -> callback.onAuthorized());
+                        }
+                    } catch (Exception e) {
+                        if(callback != null)
+                            runOnUI(() -> callback.onError(e));
+                    }
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    if(callback != null)
+                        runOnUI(() -> callback.onError(e));
+                }
+            });
+            repository.execute(new AuthSpecification(authorizeMessage));
+
+        } catch (Exception e) {
+            if(callback != null)
+                runOnUI(() -> callback.onError(e));
+        }
     }
 
     @Override
     protected void onInterrupt() {
         callback = null;
+        if(repository != null)
+            repository.cancel();
     }
 
     public interface Callback extends IUsecaseBaseCallback {

@@ -92,4 +92,9 @@ public class AuthorizeNetRepo extends NetworkRepository implements INetworkRepos
             }
         });
     }
+
+    @Override
+    public void cancel() {
+        callback = null;
+    }
 }
