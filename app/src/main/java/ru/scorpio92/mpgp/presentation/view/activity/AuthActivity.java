@@ -1,4 +1,4 @@
-package ru.scorpio92.mpgp.presentation.view;
+package ru.scorpio92.mpgp.presentation.view.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -87,6 +87,8 @@ public class AuthActivity extends AbstractActivity<IAuthPresenter> implements IA
     @Override
     public void onSuccessAuth() {
         showToast("Авторизация успешно пройдена!");
+        startActivity(new Intent(this, ConnectionActivity.class));
+        finish();
     }
 
     @Override

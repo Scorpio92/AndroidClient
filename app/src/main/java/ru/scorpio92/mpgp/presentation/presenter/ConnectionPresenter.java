@@ -1,5 +1,6 @@
 package ru.scorpio92.mpgp.presentation.presenter;
 
+import ru.scorpio92.mpgp.data.entity.message.api.APIServersList;
 import ru.scorpio92.mpgp.domain.threading.MainThread;
 import ru.scorpio92.mpgp.domain.threading.ThreadExecutor;
 import ru.scorpio92.mpgp.domain.usecase.GetServersListUsecase;
@@ -22,11 +23,13 @@ public class ConnectionPresenter extends AbstractPresenter<IConnectionActivity> 
 
     @Override
     public void getServerList() {
+        showProgressInView();
         getServersListUsecase = new GetServersListUsecase(ThreadExecutor.getInstance(true), MainThread.getInstance(), new GetServersListUsecase.Callback() {
             @Override
-            public void onSuccess() {
+            public void onSuccess(APIServersList apiServersList) {
                 if(viewIsReady()) {
-                    getView().renderServerList();
+                    hideProgressInView();
+                    getView().renderServerList(apiServersList);
                 }
             }
 
@@ -36,10 +39,13 @@ public class ConnectionPresenter extends AbstractPresenter<IConnectionActivity> 
                 handleError(e);
             }
         });
+        getServersListUsecase.execute();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(getServersListUsecase != null)
+            getServersListUsecase.cancel();
     }
 }

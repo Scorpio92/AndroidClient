@@ -1,5 +1,6 @@
 package ru.scorpio92.mpgp.domain.usecase;
 
+import ru.scorpio92.mpgp.data.entity.message.api.APIServersList;
 import ru.scorpio92.mpgp.data.repository.network.GetServersListNetRepo;
 import ru.scorpio92.mpgp.data.repository.network.core.INetworkRepository;
 import ru.scorpio92.mpgp.data.repository.network.specifications.GetServersListSpecification;
@@ -26,8 +27,11 @@ public class GetServersListUsecase extends AbstractUsecase {
     public void run() {
         repository = new GetServersListNetRepo(new GetServersListNetRepo.Callback() {
             @Override
-            public void onSuccess() {
-
+            public void onSuccess(APIServersList apiServersList) {
+                runOnUI(() -> {
+                    if(callback != null)
+                        callback.onSuccess(apiServersList);
+                });
             }
 
             @Override
@@ -49,6 +53,6 @@ public class GetServersListUsecase extends AbstractUsecase {
     }
 
     public interface Callback extends IUsecaseBaseCallback {
-        void onSuccess();
+        void onSuccess(APIServersList apiServersList);
     }
 }
