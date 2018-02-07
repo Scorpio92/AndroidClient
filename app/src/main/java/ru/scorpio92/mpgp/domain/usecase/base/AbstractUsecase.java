@@ -1,7 +1,9 @@
 package ru.scorpio92.mpgp.domain.usecase.base;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import ru.scorpio92.mpgp.domain.threading.base.IExecutor;
-import ru.scorpio92.mpgp.domain.threading.base.IMainThread;
 
 /**
  * Created by scorpio92 on 12/19/17.
@@ -10,19 +12,23 @@ import ru.scorpio92.mpgp.domain.threading.base.IMainThread;
 public abstract class AbstractUsecase implements IAbstractUsecase {
 
     private IExecutor executor;
-    private IMainThread mainThread;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
-    public AbstractUsecase(IExecutor executor, IMainThread mainThread) {
-        this.executor = executor;
-        this.mainThread = mainThread;
+    protected AbstractUsecase() {
+        this.executor = provideExecutor();
     }
 
     public abstract void run();
 
     protected abstract void onInterrupt();
 
+    protected abstract IExecutor provideExecutor();
+
     @Override
     public void execute() {
+        if(executor == null)
+            throw new IllegalArgumentException("need provide executor");
+
         executor.execute(this);
     }
 
@@ -32,6 +38,6 @@ public abstract class AbstractUsecase implements IAbstractUsecase {
     }
 
     protected void runOnUI(Runnable runnable) {
-        mainThread.post(runnable);
+        handler.post(runnable);
     }
 }

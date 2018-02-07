@@ -6,7 +6,7 @@ import android.os.Looper;
 
 import ru.scorpio92.mpgp.domain.threading.base.IMainThread;
 
-
+@Deprecated
 public class MainThread implements IMainThread {
 
     private volatile static IMainThread mainThread;

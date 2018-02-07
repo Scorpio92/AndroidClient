@@ -80,7 +80,7 @@ public class WS {
         webSocketClient.send(JsonWorker.getSerializeJson(message));
     }
 
-    public static void finish() {
+    public void finish() {
         if(webSocketClient != null) {
             webSocketClient.close();
             webSocketClient = null;

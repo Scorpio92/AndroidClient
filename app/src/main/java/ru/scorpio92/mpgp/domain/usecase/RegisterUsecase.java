@@ -9,8 +9,8 @@ import ru.scorpio92.mpgp.data.repository.network.GetServerKeyNetRepo;
 import ru.scorpio92.mpgp.data.repository.network.RegisterNetRepo;
 import ru.scorpio92.mpgp.data.repository.network.core.INetworkRepository;
 import ru.scorpio92.mpgp.data.repository.network.specifications.AuthSpecification;
+import ru.scorpio92.mpgp.domain.threading.ThreadExecutor;
 import ru.scorpio92.mpgp.domain.threading.base.IExecutor;
-import ru.scorpio92.mpgp.domain.threading.base.IMainThread;
 import ru.scorpio92.mpgp.domain.usecase.base.AbstractUsecase;
 import ru.scorpio92.mpgp.domain.usecase.base.IUsecaseBaseCallback;
 import ru.scorpio92.mpgp.util.LocalStorage;
@@ -24,8 +24,7 @@ public class RegisterUsecase extends AbstractUsecase {
     private LocalStorage localStorage;
     private INetworkRepository repository;
 
-    public RegisterUsecase(IExecutor executor, IMainThread mainThread, LocalStorage localStorage, String login, Callback callback) {
-        super(executor, mainThread);
+    public RegisterUsecase(LocalStorage localStorage, String login, Callback callback) {
         this.login = login;
         this.callback = callback;
         this.localStorage = localStorage;
@@ -97,6 +96,11 @@ public class RegisterUsecase extends AbstractUsecase {
         callback = null;
         if(repository != null)
             repository.cancel();
+    }
+
+    @Override
+    protected IExecutor provideExecutor() {
+        return ThreadExecutor.getInstance(true);
     }
 
     public interface Callback extends IUsecaseBaseCallback {

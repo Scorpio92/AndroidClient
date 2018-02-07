@@ -4,8 +4,8 @@ import ru.scorpio92.mpgp.data.entity.message.api.APIServersList;
 import ru.scorpio92.mpgp.data.repository.network.GetServersListNetRepo;
 import ru.scorpio92.mpgp.data.repository.network.core.INetworkRepository;
 import ru.scorpio92.mpgp.data.repository.network.specifications.GetServersListSpecification;
+import ru.scorpio92.mpgp.domain.threading.ThreadExecutor;
 import ru.scorpio92.mpgp.domain.threading.base.IExecutor;
-import ru.scorpio92.mpgp.domain.threading.base.IMainThread;
 import ru.scorpio92.mpgp.domain.usecase.base.AbstractUsecase;
 import ru.scorpio92.mpgp.domain.usecase.base.IUsecaseBaseCallback;
 
@@ -18,8 +18,7 @@ public class GetServersListUsecase extends AbstractUsecase {
     private Callback callback;
     private INetworkRepository repository;
 
-    public GetServersListUsecase(IExecutor executor, IMainThread mainThread, Callback callback) {
-        super(executor, mainThread);
+    public GetServersListUsecase(Callback callback) {
         this.callback = callback;
     }
 
@@ -50,6 +49,11 @@ public class GetServersListUsecase extends AbstractUsecase {
         callback = null;
         if(repository != null)
             repository.cancel();
+    }
+
+    @Override
+    protected IExecutor provideExecutor() {
+        return ThreadExecutor.getInstance(true);
     }
 
     public interface Callback extends IUsecaseBaseCallback {

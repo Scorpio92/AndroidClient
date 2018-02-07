@@ -1,7 +1,5 @@
 package ru.scorpio92.mpgp.presentation.presenter;
 
-import ru.scorpio92.mpgp.domain.threading.MainThread;
-import ru.scorpio92.mpgp.domain.threading.ThreadExecutor;
 import ru.scorpio92.mpgp.domain.usecase.AuthorizeUsecase;
 import ru.scorpio92.mpgp.domain.usecase.RegisterUsecase;
 import ru.scorpio92.mpgp.domain.usecase.base.IAbstractUsecase;
@@ -42,7 +40,7 @@ public class AuthPresenter extends AbstractPresenter<IAuthActivity> implements I
 
         showProgressInView();
 
-        registerUsecase = new RegisterUsecase(ThreadExecutor.getInstance(true), MainThread.getInstance(), localStorage, username, new RegisterUsecase.Callback() {
+        registerUsecase = new RegisterUsecase(localStorage, username, new RegisterUsecase.Callback() {
             @Override
             public void onRegistered() {
                 if (viewIsReady())
@@ -63,7 +61,7 @@ public class AuthPresenter extends AbstractPresenter<IAuthActivity> implements I
     public void authorize() {
         showProgressInView();
 
-        authorizeUsecase = new AuthorizeUsecase(ThreadExecutor.getInstance(true), MainThread.getInstance(), localStorage, new AuthorizeUsecase.Callback() {
+        authorizeUsecase = new AuthorizeUsecase(localStorage, new AuthorizeUsecase.Callback() {
             @Override
             public void onAuthorized() {
                 if (viewIsReady())

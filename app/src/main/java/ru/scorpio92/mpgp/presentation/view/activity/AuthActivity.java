@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 
 import ru.scorpio92.mpgp.Constants;
 import ru.scorpio92.mpgp.R;
-import ru.scorpio92.mpgp.data.repository.network.core.WS;
 import ru.scorpio92.mpgp.presentation.presenter.AuthPresenter;
 import ru.scorpio92.mpgp.presentation.presenter.base.IAuthPresenter;
 import ru.scorpio92.mpgp.presentation.view.base.AbstractActivity;
@@ -43,7 +42,6 @@ public class AuthActivity extends AbstractActivity<IAuthPresenter> implements IA
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        WS.finish();
     }
 
     private void initUI() {
