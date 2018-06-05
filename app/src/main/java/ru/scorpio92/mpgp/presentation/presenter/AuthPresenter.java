@@ -1,22 +1,19 @@
 package ru.scorpio92.mpgp.presentation.presenter;
 
-import ru.scorpio92.mpgp.domain.usecase.AuthorizeUsecase;
-import ru.scorpio92.mpgp.domain.usecase.RegisterUsecase;
-import ru.scorpio92.mpgp.domain.usecase.base.IAbstractUsecase;
-import ru.scorpio92.mpgp.exception.general.EmptyFieldException;
-import ru.scorpio92.mpgp.presentation.presenter.base.AbstractPresenter;
+import android.support.annotation.NonNull;
+
+import io.reactivex.observers.DisposableObserver;
+import ru.scorpio92.mpgp.data.model.RegInfo;
+import ru.scorpio92.mpgp.domain.RegisterUsecase;
 import ru.scorpio92.mpgp.presentation.presenter.base.IAuthPresenter;
 import ru.scorpio92.mpgp.presentation.view.base.IAuthActivity;
 import ru.scorpio92.mpgp.util.LocalStorage;
+import ru.scorpio92.mpgp.util.Logger;
+import ru.scorpio92.sdk.architecture.presentation.presenter.BasePresenter;
 
-/**
- * Created by scorpio92 on 1/6/18.
- */
+public class AuthPresenter extends BasePresenter<IAuthActivity> implements IAuthPresenter {
 
-public class AuthPresenter extends AbstractPresenter<IAuthActivity> implements IAuthPresenter {
-
-    private IAbstractUsecase registerUsecase;
-    private IAbstractUsecase authorizeUsecase;
+    private RegisterUsecase registerUsecase;
     private LocalStorage localStorage;
 
     public AuthPresenter(IAuthActivity view) {
@@ -33,48 +30,33 @@ public class AuthPresenter extends AbstractPresenter<IAuthActivity> implements I
 
     @Override
     public void register(String username) {
-        if (username.isEmpty()) {
-            handleError(new EmptyFieldException("никнейм"));
-            return;
-        }
-
-        showProgressInView();
-
-        registerUsecase = new RegisterUsecase(localStorage, username, new RegisterUsecase.Callback() {
+        registerUsecase = new RegisterUsecase(new RegInfo(username, username));
+        registerUsecase.execute(new DisposableObserver<Boolean>() {
             @Override
-            public void onRegistered() {
-                if (viewIsReady())
-                    getView().onSuccessReg();
+            public void onNext(Boolean aBoolean) {
+                if (checkView()) {
+                    if (aBoolean)
+                        getView().onSuccessRegistration();
+                    else
+                        getView().onError("FUCK!");
+                }
             }
 
             @Override
-            public void onError(Exception e) {
-                hideProgressInView();
-                handleError(e);
+            public void onError(Throwable e) {
+                handleErrors((Exception) e);
+            }
+
+            @Override
+            public void onComplete() {
+
             }
         });
-        registerUsecase.execute();
-
     }
 
     @Override
     public void authorize() {
-        showProgressInView();
 
-        authorizeUsecase = new AuthorizeUsecase(localStorage, new AuthorizeUsecase.Callback() {
-            @Override
-            public void onAuthorized() {
-                if (viewIsReady())
-                    getView().onSuccessAuth();
-            }
-
-            @Override
-            public void onError(Exception e) {
-                hideProgressInView();
-                handleError(e);
-            }
-        });
-        authorizeUsecase.execute();
     }
 
 
@@ -83,7 +65,20 @@ public class AuthPresenter extends AbstractPresenter<IAuthActivity> implements I
         super.onDestroy();
         if (registerUsecase != null)
             registerUsecase.cancel();
-        if (authorizeUsecase != null)
-            authorizeUsecase.cancel();
+    }
+
+    @Override
+    protected void onCustomHandleErrors(@NonNull Exception e) {
+        super.onCustomHandleErrors(e);
+    }
+
+    @Override
+    protected void writeExceptionInLog(Exception e) {
+        Logger.error(e);
+    }
+
+    @Override
+    protected String provideDefaultErrorMsg() {
+        return "OOOPS!";
     }
 }

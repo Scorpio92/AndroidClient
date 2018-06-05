@@ -1,12 +1,10 @@
 package ru.scorpio92.mpgp.presentation.view.base;
 
-/**
- * Created by scorpio92 on 1/6/18.
- */
+import ru.scorpio92.sdk.architecture.presentation.view.IBaseView;
 
-public interface IAuthActivity extends IBaseActivity {
+public interface IAuthActivity extends IBaseView {
 
-    void onSuccessReg();
+    void onSuccessRegistration();
 
     void onSuccessAuth();
 }

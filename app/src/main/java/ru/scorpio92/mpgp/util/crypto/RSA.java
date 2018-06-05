@@ -16,8 +16,6 @@ import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
 
-import ru.scorpio92.mpgp.Constants;
-
 /**
  * Created by scorpio92 on 1/13/18.
  */
@@ -40,8 +38,6 @@ public class RSA {
     }
 
     public static String encryptToBase64(PublicKey publicKey, String message) throws Exception {
-        if(!Constants.ENCRYPTION_ENABLED)
-            return message;
         Cipher cipher = Cipher.getInstance(ALG, CRYPTO_PROVIDER);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         return new String(Base64.encode(cipher.doFinal(message.getBytes(CHARSET)), Base64.NO_WRAP));
@@ -54,8 +50,6 @@ public class RSA {
     }
 
     public static String decryptFromBase64(PrivateKey privateKey, String encryptedBase64) throws Exception {
-        if(!Constants.ENCRYPTION_ENABLED)
-            return encryptedBase64;
         Cipher cipher = Cipher.getInstance(ALG, CRYPTO_PROVIDER);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         return new String(cipher.doFinal(Base64.decode(encryptedBase64, Base64.NO_WRAP)), CHARSET);

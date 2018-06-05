@@ -1,8 +1,6 @@
 package ru.scorpio92.mpgp.presentation.presenter.base;
 
-/**
- * Created by scorpio92 on 1/6/18.
- */
+import ru.scorpio92.sdk.architecture.presentation.presenter.IBasePresenter;
 
 public interface IAuthPresenter extends IBasePresenter {
 

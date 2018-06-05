@@ -3,6 +3,7 @@ package ru.scorpio92.mpgp.presentation.view.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
@@ -11,18 +12,15 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
-import ru.scorpio92.mpgp.Constants;
+import ru.scorpio92.mpgp.BuildConfig;
 import ru.scorpio92.mpgp.R;
 import ru.scorpio92.mpgp.presentation.presenter.AuthPresenter;
 import ru.scorpio92.mpgp.presentation.presenter.base.IAuthPresenter;
-import ru.scorpio92.mpgp.presentation.view.base.AbstractActivity;
 import ru.scorpio92.mpgp.presentation.view.base.IAuthActivity;
+import ru.scorpio92.mpgp.util.ViewUtils;
+import ru.scorpio92.sdk.architecture.presentation.view.BaseActivity;
 
-/**
- * Created by scorpio92 on 1/6/18.
- */
-
-public class AuthActivity extends AbstractActivity<IAuthPresenter> implements IAuthActivity {
+public class AuthActivity extends BaseActivity<IAuthPresenter> implements IAuthActivity {
 
     private ProgressBar progressBar;
     private RelativeLayout authContainer;
@@ -34,9 +32,7 @@ public class AuthActivity extends AbstractActivity<IAuthPresenter> implements IA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         initUI();
-
-        registerPresenter(new AuthPresenter(this));
-        getPresenter().checkAuthState();
+        //getPresenter().checkAuthState();
     }
 
     @Override
@@ -66,40 +62,51 @@ public class AuthActivity extends AbstractActivity<IAuthPresenter> implements IA
 
         findViewById(R.id.link).setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(Constants.PROJECT_URL));
+            i.setData(Uri.parse(BuildConfig.PROJECT_URL));
             startActivity(i);
         });
     }
 
     private void register() {
-        hideKeyboard();
+        ViewUtils.hideSoftKeyboard(this, getCurrentFocus());
         getPresenter().register(login.getText().toString().trim());
     }
 
     @Override
-    public void onSuccessReg() {
-        showToast("Регистрация успешно пройдена!");
+    public void onSuccessRegistration() {
+        ViewUtils.showToast(this, "Регистрация успешно пройдена!");
         getPresenter().authorize();
     }
 
     @Override
     public void onSuccessAuth() {
-        showToast("Авторизация успешно пройдена!");
-        startActivity(new Intent(this, ConnectionActivity.class));
+        ViewUtils.showToast(this, "Авторизация успешно пройдена!");
         finish();
     }
 
     @Override
-    public void showError(String error) {
+    public void onError(@NonNull String error) {
         authContainer.setVisibility(View.VISIBLE);
         tvError.setVisibility(View.VISIBLE);
-        if (error != null && !error.isEmpty())
+        if (!error.isEmpty())
             tvError.setText(error);
     }
 
     @Override
-    public void showProgress(boolean show) {
+    public void showProgress() {
         authContainer.setVisibility(View.GONE);
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        authContainer.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @NonNull
+    @Override
+    protected IAuthPresenter providePresenter() {
+        return new AuthPresenter(this);
     }
 }

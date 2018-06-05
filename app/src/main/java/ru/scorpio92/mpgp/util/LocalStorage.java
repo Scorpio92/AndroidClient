@@ -5,10 +5,6 @@ import android.content.Context;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-/**
- * Created by scorpio92 on 16.01.2018.
- */
-
 public class LocalStorage {
 
     public final static String AUTH_TOKEN_STORAGE = ".token";
