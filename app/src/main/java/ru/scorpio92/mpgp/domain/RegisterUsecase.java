@@ -11,7 +11,7 @@ import ru.scorpio92.mpgp.data.repository.network.AuthRepo;
 import ru.scorpio92.mpgp.util.JsonWorker;
 import ru.scorpio92.sdk.architecture.domain.rxusecase.RxAbstractUseCase;
 
-public class RegisterUsecase extends RxAbstractUseCase<Boolean> {
+public class RegisterUsecase extends RxAbstractUseCase<Void> {
 
     private RegInfo regInfo;
     private AuthRepo authRepo;
@@ -22,14 +22,19 @@ public class RegisterUsecase extends RxAbstractUseCase<Boolean> {
     }
 
     @Override
-    protected void checkPreconditions(@NonNull DisposableObserver<Boolean> observer) throws Exception {
+    protected void checkPreconditions(@NonNull DisposableObserver<Void> observer) throws Exception {
         super.checkPreconditions(observer);
     }
 
     @Override
-    protected Observable<Boolean> buildObservable() throws Exception {
+    protected Observable<Void> buildObservable() throws Exception {
         BaseMessage regMsg = new BaseMessage(BaseMessage.Type.REGISTER);
-        regMsg.setServerData(JsonWorker.getSerializeJson(new RegisterServerDataRequest(regInfo.getLogin(), regInfo.getPassword())));
-        return authRepo.register(regMsg);
+        regMsg.setServerData(JsonWorker.getSerializeJson(
+                new RegisterServerDataRequest(
+                        regInfo.getLogin(),
+                        regInfo.getPassword(),
+                        regInfo.getNickname()
+                )));
+        return authRepo.register(regMsg).toObservable();
     }
 }

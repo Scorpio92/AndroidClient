@@ -32,7 +32,6 @@ public class AuthActivity extends BaseActivity<IAuthPresenter> implements IAuthA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         initUI();
-        //getPresenter().checkAuthState();
     }
 
     @Override

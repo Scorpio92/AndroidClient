@@ -11,4 +11,12 @@
     <!--подключение к сокет серверу-->
     <string name="connection_header">Выберите сервер для подключения</string>
 
+    <!--Текст ошибок-->
+    <string name="wtf_error">Произошла непревиденная ошибка</string>
+    <string name="invalid_login">Указан некорректный логин</string>
+    <string name="invalid_nickname">Указан некорректный никнейм</string>
+    <string name="invalid_password">Указан некорректный пароль</string>
+    <string name="login_exists">Указанный логин уже существует</string>
+    <string name="nickname_exists">Указанный никнейм уже существует</string>
+
 </resources>

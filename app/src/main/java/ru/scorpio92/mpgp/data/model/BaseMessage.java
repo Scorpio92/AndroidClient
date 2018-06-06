@@ -19,6 +19,7 @@ public class BaseMessage {
     private String status;
     private String clientData;
     private String serverData;
+    private Error error;
 
     public BaseMessage() {
     }
@@ -43,6 +44,9 @@ public class BaseMessage {
         return serverData;
     }
 
+    public Error getError() {
+        return error;
+    }
 
     public void setClientData(String clientData) {
         this.clientData = clientData;
