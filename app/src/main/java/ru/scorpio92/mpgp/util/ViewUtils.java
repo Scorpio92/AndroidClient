@@ -3,6 +3,7 @@ package ru.scorpio92.mpgp.util;
 import android.app.Activity;
 import android.content.Context;
 import android.os.IBinder;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -27,5 +28,12 @@ public class ViewUtils {
     public static void showToast(Context context, String text) {
         if (context != null && text != null && !text.isEmpty())
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Показываем SnackBar
+     */
+    public static void showShackBar(View view, String text) {
+        Snackbar.make(view, text, Snackbar.LENGTH_SHORT).show();
     }
 }

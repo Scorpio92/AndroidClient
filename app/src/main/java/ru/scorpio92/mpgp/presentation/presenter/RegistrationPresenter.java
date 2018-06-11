@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import ru.scorpio92.mpgp.R;
 import ru.scorpio92.mpgp.data.model.RegInfo;
+import ru.scorpio92.mpgp.data.model.request.RegisterServerDataRequest;
 import ru.scorpio92.mpgp.domain.RegisterUsecase;
 import ru.scorpio92.mpgp.exception.reg.InvaidLoginException;
 import ru.scorpio92.mpgp.exception.reg.InvaidNicknameException;
@@ -13,6 +14,7 @@ import ru.scorpio92.mpgp.exception.reg.NicknameExistsException;
 import ru.scorpio92.mpgp.presentation.presenter.base.IRegistrationPresenter;
 import ru.scorpio92.mpgp.presentation.view.base.IRegistrationFragment;
 import ru.scorpio92.mpgp.util.Logger;
+import ru.scorpio92.mpgp.util.ValidateUtils;
 import ru.scorpio92.sdk.architecture.domain.rxusecase.SimpleObserver;
 import ru.scorpio92.sdk.architecture.presentation.presenter.BasePresenter;
 
@@ -25,8 +27,28 @@ public class RegistrationPresenter extends BasePresenter<IRegistrationFragment> 
     }
 
     @Override
-    public void register(RegInfo regInfo) {
-        registerUsecase = new RegisterUsecase(regInfo);
+    public void onLPInput(String login, String password) {
+        if(!ValidateUtils.validateParam(login, RegisterServerDataRequest.LOGIN_REGEXP)) {
+            getView().onFailedLoginValidation(getView().getViewContext().getString(R.string.invalid_login));
+            return;
+        }
+
+        if(!ValidateUtils.validateParam(password, RegisterServerDataRequest.PASSWORD_REGEXP)) {
+            getView().onFailedPasswordValidation(getView().getViewContext().getString(R.string.invalid_password));
+            return;
+        }
+
+        getView().onStep2();
+    }
+
+    @Override
+    public void register(String login, String password, String nickname) {
+        if(!ValidateUtils.validateParam(nickname, RegisterServerDataRequest.NICKNAME_REGEXP)) {
+            getView().onFailedNicknameValidation(getView().getViewContext().getString(R.string.invalid_nickname));
+            return;
+        }
+
+        registerUsecase = new RegisterUsecase(new RegInfo(login, password, nickname));
         registerUsecase.execute(new SimpleObserver<Void>() {
             @Override
             protected void onStart() {
