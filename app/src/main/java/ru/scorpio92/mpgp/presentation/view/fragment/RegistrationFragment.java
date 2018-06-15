@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class RegistrationFragment extends BaseFragment<IRegistrationPresenter> i
     private LinearLayoutCompat lpContainer, nickContainer;
     private TextInputLayout loginTILayout, passwordTILayout, nicknameTILayout;
     private AppCompatEditText login, password, nickname;
+    private AlertDialog regDialog;
 
     @Nullable
     @Override
@@ -81,11 +83,30 @@ public class RegistrationFragment extends BaseFragment<IRegistrationPresenter> i
         return new RegistrationPresenter(this);
     }
 
-
     @Override
     public void onError(@NonNull String error) {
         super.onError(error);
         ViewUtils.showShackBar(rootLayout, error);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        hideProgress();
+    }
+
+    @Override
+    public void showProgress() {
+        super.showProgress();
+        if (getContext() != null)
+            regDialog = ViewUtils.showProgressDialog(getContext(), getString(R.string.registration_process));
+    }
+
+    @Override
+    public void hideProgress() {
+        super.hideProgress();
+        if (regDialog != null && regDialog.isShowing())
+            regDialog.dismiss();
     }
 
     private void initUI(View view) {
@@ -101,6 +122,7 @@ public class RegistrationFragment extends BaseFragment<IRegistrationPresenter> i
         password = view.findViewById(R.id.password);
 
         view.findViewById(R.id.continueBtn).setOnClickListener(v -> {
+            ViewUtils.hideSoftKeyboard(getActivity());
             loginTILayout.setError("");
             passwordTILayout.setError("");
             getPresenter().onLPInput(
@@ -118,6 +140,7 @@ public class RegistrationFragment extends BaseFragment<IRegistrationPresenter> i
         view.findViewById(R.id.backBtn).setOnClickListener(v -> onStep1());
 
         view.findViewById(R.id.regBtn).setOnClickListener(v -> {
+            ViewUtils.hideSoftKeyboard(getActivity());
             nicknameTILayout.setError("");
             getPresenter().register(
                     login.getText().toString().trim(),

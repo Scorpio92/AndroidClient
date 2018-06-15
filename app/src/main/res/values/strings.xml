@@ -10,6 +10,7 @@
     <string name="back_button">НАЗАД</string>
     <string name="reg_button">ЗАРЕГИСТРИРОВАТЬСЯ</string>
     <string name="ok_button">OK</string>
+    <string name="registration_process">Регистрация</string>
 
     <string name="recover_button"><u>уже есть аккаунт?</u></string>
     <string name="link"><u>MPGP Project</u></string>
@@ -24,5 +25,8 @@
     <string name="invalid_password">Указан некорректный пароль</string>
     <string name="login_exists">Указанный логин уже существует</string>
     <string name="nickname_exists">Указанный никнейм уже существует</string>
+
+    <!--Диалоги-->
+    <string name="progress_dialog_msg">Пожалуйста, подождите...</string>
 
 </resources>
