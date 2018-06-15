@@ -74,7 +74,7 @@ public class StartFragment extends BaseFragment<IStartPresenter> implements ISta
     @Override
     public void onSuccessAuth() {
         if (listener != null)
-            listener.onFragmentResut(IFragmentListener.ResultCode.SUCCESS_WS_AUTH);
+            listener.onFragmentResut(IFragmentListener.ResultCode.CONNECTED_TO_WS);
     }
 
     @NonNull
@@ -96,7 +96,7 @@ public class StartFragment extends BaseFragment<IStartPresenter> implements ISta
 
         view.findViewById(R.id.authBtn).setOnClickListener(v -> {
             if (listener != null)
-                listener.onFragmentResut(IFragmentListener.ResultCode.NEED_AUTH);
+                listener.onFragmentResut(IFragmentListener.ResultCode.TRY_AUTH_IF_USER_HAVE_ACCOUNT);
         });
 
         view.findViewById(R.id.link).setOnClickListener(v -> {

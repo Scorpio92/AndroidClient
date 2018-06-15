@@ -8,6 +8,9 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
@@ -67,7 +70,7 @@ public class ViewUtils {
         AlertDialog.Builder builder = getDialogBuilder(context, title, msg);
         if (listener != null)
             builder.setPositiveButton(context.getString(android.R.string.ok), listener);
-        builder.setCancelable(isModalDialog);
+        builder.setCancelable(!isModalDialog);
         builder.show();
     }
 
@@ -89,5 +92,17 @@ public class ViewUtils {
             dialog.getWindow().setAttributes(lp);
         }
         return dialog;
+    }
+
+    public static void replaceFragment(FragmentManager fragmentManager, int containerId, Fragment fragment) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(containerId, fragment, fragment.getClass().getSimpleName());
+        fragmentTransaction.addToBackStack(fragment.getClass().getSimpleName());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.commit();
+    }
+
+    public static void clearFragmentStack(FragmentManager fragmentManager) {
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }

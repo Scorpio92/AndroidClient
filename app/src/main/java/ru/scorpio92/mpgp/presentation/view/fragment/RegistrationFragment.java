@@ -74,7 +74,7 @@ public class RegistrationFragment extends BaseFragment<IRegistrationPresenter> i
     @Override
     public void onSuccessRegistration() {
         if (listener != null)
-            listener.onFragmentResut(IFragmentListener.ResultCode.NEED_AUTH);
+            listener.onFragmentResut(IFragmentListener.ResultCode.SUCCESS_REGISTRATION);
     }
 
     @NonNull

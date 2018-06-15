@@ -28,5 +28,8 @@
 
     <!--Диалоги-->
     <string name="progress_dialog_msg">Пожалуйста, подождите...</string>
+    <string name="exit_dialog_title">Выход</string>
+    <string name="exit_dialog_msg">Вы действительно хотите выйти?</string>
+
 
 </resources>

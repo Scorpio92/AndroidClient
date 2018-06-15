@@ -1,8 +1,8 @@
 package ru.scorpio92.mpgp.presentation.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import ru.scorpio92.mpgp.R;
@@ -10,7 +10,7 @@ import ru.scorpio92.mpgp.presentation.view.base.IFragmentListener;
 import ru.scorpio92.mpgp.presentation.view.fragment.AuthFragment;
 import ru.scorpio92.mpgp.presentation.view.fragment.RegistrationFragment;
 import ru.scorpio92.mpgp.presentation.view.fragment.StartFragment;
-import ru.scorpio92.sdk.architecture.presentation.view.BaseFragment;
+import ru.scorpio92.mpgp.util.ViewUtils;
 
 public class AuthActivity extends AppCompatActivity implements IFragmentListener {
 
@@ -25,34 +25,42 @@ public class AuthActivity extends AppCompatActivity implements IFragmentListener
     public void onFragmentResut(ResultCode resultCode) {
         switch (resultCode) {
             case NEED_REGISTRATION:
-                replaceFragment(new RegistrationFragment());
+                ViewUtils.replaceFragment(getSupportFragmentManager(), R.id.container, new RegistrationFragment());
+                break;
+            case TRY_AUTH_IF_USER_HAVE_ACCOUNT:
+                ViewUtils.replaceFragment(getSupportFragmentManager(), R.id.container, new AuthFragment());
+                break;
+            case SUCCESS_REGISTRATION:
+                ViewUtils.clearFragmentStack(getSupportFragmentManager());
+                ViewUtils.replaceFragment(getSupportFragmentManager(), R.id.container, new AuthFragment());
                 break;
             case NEED_AUTH:
-                replaceFragment(new AuthFragment());
+                ViewUtils.clearFragmentStack(getSupportFragmentManager());
+                ViewUtils.replaceFragment(getSupportFragmentManager(), R.id.container, new AuthFragment());
                 break;
-            case SUCCESS_WS_AUTH:
+            case SUCCESS_AUTH:
+                ViewUtils.clearFragmentStack(getSupportFragmentManager());
+                ViewUtils.replaceFragment(getSupportFragmentManager(), R.id.container, new StartFragment());
+                break;
+            case CONNECTED_TO_WS:
+                startActivity(new Intent(AuthActivity.this, MainActivity.class));
+                finish();
                 break;
         }
-
     }
 
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1)
-            finish();
+            ViewUtils.createAndShowAlertDialog(AuthActivity.this, getString(R.string.exit_dialog_title), getString(R.string.exit_dialog_msg), false, (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+                finish();
+            });
         else
             super.onBackPressed();
     }
 
     private void initUI() {
-        replaceFragment(new StartFragment());
-    }
-
-    private void replaceFragment(BaseFragment fragment) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.container, fragment, BaseFragment.class.getSimpleName());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragmentTransaction.commit();
+        ViewUtils.replaceFragment(getSupportFragmentManager(), R.id.container, new StartFragment());
     }
 }
