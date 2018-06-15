@@ -10,6 +10,7 @@ import ru.scorpio92.mpgp.presentation.view.base.IFragmentListener;
 import ru.scorpio92.mpgp.presentation.view.fragment.AuthFragment;
 import ru.scorpio92.mpgp.presentation.view.fragment.RegistrationFragment;
 import ru.scorpio92.mpgp.presentation.view.fragment.StartFragment;
+import ru.scorpio92.mpgp.util.LocalStorage;
 import ru.scorpio92.mpgp.util.ViewUtils;
 
 public class AuthActivity extends AppCompatActivity implements IFragmentListener {
@@ -54,6 +55,8 @@ public class AuthActivity extends AppCompatActivity implements IFragmentListener
         if (getSupportFragmentManager().getBackStackEntryCount() == 1)
             ViewUtils.createAndShowAlertDialog(AuthActivity.this, getString(R.string.exit_dialog_title), getString(R.string.exit_dialog_msg), false, (dialogInterface, i) -> {
                 dialogInterface.dismiss();
+                if (LocalStorage.getLocalStorageInstance() != null)
+                    LocalStorage.getLocalStorageInstance().close();
                 finish();
             });
         else

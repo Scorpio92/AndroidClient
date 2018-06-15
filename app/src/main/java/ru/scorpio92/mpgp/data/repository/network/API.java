@@ -9,4 +9,7 @@ public interface API {
 
     @POST("/")
     Single<BaseMessage> register(@Body BaseMessage regMsg);
+
+    @POST("/")
+    Single<BaseMessage> authorize(@Body BaseMessage regMsg);
 }

@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import ru.scorpio92.mpgp.R;
 import ru.scorpio92.mpgp.data.model.RegInfo;
 import ru.scorpio92.mpgp.data.model.request.RegisterServerDataRequest;
-import ru.scorpio92.mpgp.domain.RegisterUsecase;
+import ru.scorpio92.mpgp.domain.RegisterUseCase;
 import ru.scorpio92.mpgp.exception.reg.InvaidLoginException;
 import ru.scorpio92.mpgp.exception.reg.InvaidNicknameException;
 import ru.scorpio92.mpgp.exception.reg.InvaidPasswordException;
@@ -20,7 +20,7 @@ import ru.scorpio92.sdk.architecture.presentation.presenter.BasePresenter;
 
 public class RegistrationPresenter extends BasePresenter<IRegistrationFragment> implements IRegistrationPresenter {
 
-    private RegisterUsecase registerUsecase;
+    private RegisterUseCase registerUseCase;
 
     public RegistrationPresenter(@NonNull IRegistrationFragment view) {
         super(view);
@@ -48,8 +48,8 @@ public class RegistrationPresenter extends BasePresenter<IRegistrationFragment> 
             return;
         }
 
-        registerUsecase = new RegisterUsecase(new RegInfo(login, password, nickname));
-        registerUsecase.execute(new SimpleObserver<Void>() {
+        registerUseCase = new RegisterUseCase(new RegInfo(login, password, nickname));
+        registerUseCase.execute(new SimpleObserver<Void>() {
             @Override
             protected void onStart() {
                 if (checkView())
@@ -86,7 +86,7 @@ public class RegistrationPresenter extends BasePresenter<IRegistrationFragment> 
         } else if (e instanceof NicknameExistsException) {
             error = getView().getViewContext().getString(R.string.nickname_exists);
         } else {
-            error = getView().getViewContext().getString(R.string.wtf_error);
+            error = provideDefaultErrorMsg();
         }
         if (checkView())
             getView().onError(error);
@@ -105,7 +105,7 @@ public class RegistrationPresenter extends BasePresenter<IRegistrationFragment> 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (registerUsecase != null)
-            registerUsecase.cancel();
+        if (registerUseCase != null)
+            registerUseCase.cancel();
     }
 }

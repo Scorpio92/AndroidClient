@@ -94,6 +94,11 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static void safetyDismissDialog(AlertDialog dialog) {
+        if(dialog != null && dialog.isShowing())
+            dialog.dismiss();
+    }
+
     public static void replaceFragment(FragmentManager fragmentManager, int containerId, Fragment fragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(containerId, fragment, fragment.getClass().getSimpleName());

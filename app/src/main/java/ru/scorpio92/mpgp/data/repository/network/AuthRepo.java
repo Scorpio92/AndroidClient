@@ -1,17 +1,21 @@
 package ru.scorpio92.mpgp.data.repository.network;
 
 import io.reactivex.Completable;
+import io.reactivex.Single;
 import retrofit2.Retrofit;
 import ru.scorpio92.mpgp.BuildConfig;
 import ru.scorpio92.mpgp.data.model.BaseMessage;
+import ru.scorpio92.mpgp.data.model.response.AuthServerDataResponse;
 import ru.scorpio92.mpgp.data.repository.network.base.IAuthRepo;
 import ru.scorpio92.mpgp.data.repository.network.core.RetrofitNetworkRepository;
+import ru.scorpio92.mpgp.exception.auth.IncorrectPairException;
 import ru.scorpio92.mpgp.exception.general.WtfException;
 import ru.scorpio92.mpgp.exception.reg.InvaidLoginException;
 import ru.scorpio92.mpgp.exception.reg.InvaidNicknameException;
 import ru.scorpio92.mpgp.exception.reg.InvaidPasswordException;
 import ru.scorpio92.mpgp.exception.reg.LoginExistsException;
 import ru.scorpio92.mpgp.exception.reg.NicknameExistsException;
+import ru.scorpio92.mpgp.util.JsonWorker;
 
 public class AuthRepo extends RetrofitNetworkRepository<API> implements IAuthRepo {
 
@@ -39,6 +43,31 @@ public class AuthRepo extends RetrofitNetworkRepository<API> implements IAuthRep
                             }
                         default:
                             throw new WtfException();
+                    }
+                });
+    }
+
+    @Override
+    public Single<String> authorizeAndGetToken(BaseMessage authMsg) {
+        return getApiInterface().authorize(authMsg)
+                .flatMap(baseMessage -> {
+                    switch (baseMessage.getStatus()) {
+                        case SUCCESS:
+                            AuthServerDataResponse serverDataResponse = JsonWorker.getDeserializeJson(baseMessage.getServerData(), AuthServerDataResponse.class);
+                            return Single.just(serverDataResponse.getAuthToken());
+                        case ERROR:
+                            switch (baseMessage.getError().getErrorCode()) {
+                                case 1:
+                                    throw new InvaidLoginException();
+                                case 2:
+                                    throw new InvaidPasswordException();
+                                case 3:
+                                    throw new IncorrectPairException();
+                                default:
+                                    throw new WtfException();
+                            }
+                            default:
+                                throw new WtfException();
                     }
                 });
     }

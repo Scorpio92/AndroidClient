@@ -1,33 +1,50 @@
 package ru.scorpio92.mpgp.util;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.lang.ref.WeakReference;
 
 public class LocalStorage {
 
     public final static String AUTH_TOKEN_STORAGE = ".token";
-    public final static String SESSION_KEY_STORAGE = ".skey";
 
-    private Context context;
+    private static volatile LocalStorage localStorageInstance;
 
-    private LocalStorage(Context context) {
-        this.context = context;
+    private WeakReference<Context> contextWeakReference;
+
+    private LocalStorage(@NonNull Context context) {
+        this.contextWeakReference = new WeakReference<>(context);
     }
 
-    public static LocalStorage getInstance(Context context) {
-        return new LocalStorage(context);
+    public static void initLocalStorage(Context context) {
+        if (localStorageInstance == null && context != null)
+            localStorageInstance = new LocalStorage(context.getApplicationContext());
+    }
+
+    @Nullable
+    public static LocalStorage getLocalStorageInstance() {
+        return localStorageInstance;
+    }
+
+    public void close() {
+        if (contextWeakReference != null)
+            contextWeakReference.clear();
+        contextWeakReference = null;
+        localStorageInstance = null;
     }
 
     public void setDataInFile(String fileName, String data) throws Exception {
-        FileOutputStream outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+        FileOutputStream outputStream = contextWeakReference.get().openFileOutput(fileName, Context.MODE_PRIVATE);
         outputStream.write(data.getBytes());
         outputStream.close();
     }
 
     public String getDataFromFile(String fileName) throws Exception {
-        FileInputStream fileInputStream = context.openFileInput(fileName);
+        FileInputStream fileInputStream = contextWeakReference.get().openFileInput(fileName);
         int ch;
         StringBuilder temp = new StringBuilder();
         while ((ch = fileInputStream.read()) != -1) {
@@ -37,8 +54,12 @@ public class LocalStorage {
         return temp.toString();
     }
 
+    public boolean deleteFile(String fileName) throws Exception {
+        return this.contextWeakReference.get().deleteFile(fileName);
+    }
+
     public boolean fileExist(String fileName) {
-        String[] arrFileName = context.fileList();
+        String[] arrFileName = contextWeakReference.get().fileList();
         for (String item : arrFileName) {
             if (item.equals(fileName)) {
                 return true;

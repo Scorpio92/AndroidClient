@@ -105,8 +105,7 @@ public class RegistrationFragment extends BaseFragment<IRegistrationPresenter> i
     @Override
     public void hideProgress() {
         super.hideProgress();
-        if (regDialog != null && regDialog.isShowing())
-            regDialog.dismiss();
+        ViewUtils.safetyDismissDialog(regDialog);
     }
 
     private void initUI(View view) {

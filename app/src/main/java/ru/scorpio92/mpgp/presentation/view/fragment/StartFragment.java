@@ -6,11 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import ru.scorpio92.mpgp.BuildConfig;
 import ru.scorpio92.mpgp.R;
@@ -23,9 +24,10 @@ import ru.scorpio92.sdk.architecture.presentation.view.BaseFragment;
 
 public class StartFragment extends BaseFragment<IStartPresenter> implements IStartFragment {
 
-    private ProgressBar progressBar;
-    private LinearLayoutCompat actionContainer;
     private IFragmentListener listener;
+    private CoordinatorLayout rootLayout;
+    private LinearLayoutCompat actionContainer;
+    private AlertDialog authDialog;
 
     @Nullable
     @Override
@@ -45,19 +47,20 @@ public class StartFragment extends BaseFragment<IStartPresenter> implements ISta
     public void showProgress() {
         super.showProgress();
         actionContainer.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+        if (getContext() != null)
+            authDialog = ViewUtils.showProgressDialog(getContext(), getString(R.string.ws_connection_process));
     }
 
     @Override
     public void hideProgress() {
         super.hideProgress();
-        progressBar.setVisibility(View.GONE);
+        ViewUtils.safetyDismissDialog(authDialog);
     }
 
     @Override
     public void onError(@NonNull String error) {
         super.onError(error);
-        ViewUtils.showToast(getContext(), error);
+        ViewUtils.showShackBar(rootLayout, error);
     }
 
     @Override
@@ -84,7 +87,7 @@ public class StartFragment extends BaseFragment<IStartPresenter> implements ISta
     }
 
     private void initUI(View view) {
-        progressBar = view.findViewById(R.id.progress);
+        rootLayout = view.findViewById(R.id.root);
 
         actionContainer = view.findViewById(R.id.actionContainer);
         actionContainer.setVisibility(View.GONE);
