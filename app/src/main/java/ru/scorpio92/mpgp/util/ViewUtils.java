@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import ru.scorpio92.mpgp.R;
@@ -53,7 +55,16 @@ public class ViewUtils {
      * Показываем SnackBar
      */
     public static void showShackBar(View view, String text) {
-        Snackbar.make(view, text, Snackbar.LENGTH_SHORT).show();
+        Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_SHORT);
+        TextView tv = snackbar.getView().findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorAccent));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        } else {
+            tv.setGravity(Gravity.CENTER_HORIZONTAL);
+        }
+        snackbar.getView().setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.colorPrimaryDark));
+        snackbar.show();
     }
 
     public static AlertDialog.Builder getDialogBuilder(@NonNull Context context, @Nullable String title, @Nullable String msg) {

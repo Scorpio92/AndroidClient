@@ -76,7 +76,7 @@ public class AuthPresenter extends BasePresenter<IAuthFragment> implements IAuth
         } else if (e instanceof InvaidPasswordException) {
             error = getView().getViewContext().getString(R.string.invalid_password);
         } else if (e instanceof IncorrectPairException) {
-            error = getView().getViewContext().getString(R.string.login_exists);
+            error = getView().getViewContext().getString(R.string.incorrect_pair);
         }  else {
             error = provideDefaultErrorMsg();
         }

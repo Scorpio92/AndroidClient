@@ -4,9 +4,12 @@
     <!--Текст который показывается при регистрации и авторизации-->
     <string name="welcome_text1">Добро пожаловать в MPGP Android client !</string>
     <string name="welcome_text2">Если у Вас ещё нет акаунта, пожалуйста, пройдите процедуру регистрации</string>
-    <string name="registration_text1">Регистрация не займёт у Вас много времени.\nПридумайте логин и пароль. Логин не короче 3-х символов, пароль - не менее 8-ми любых символов</string>
-    <string name="registration_text2">Почти всё !\nПридумайте себе никнейм (псевдоним). Никнейм - это имя которое будут видеть другие пользователи</string>
-    <string name="authorization_text">Для продолжения работы с приложением необходимо авторизоваться. Введите логин и пароль указанные при регистрации</string>
+    <string name="registration_text1_1">Регистрация не займёт у Вас много времени</string>
+    <string name="registration_text1_2">Придумайте логин и пароль. Логин не короче 3-х символов, пароль - не менее 8-ми любых символов</string>
+    <string name="registration_text2_1">Почти всё !</string>
+    <string name="registration_text2_2">Придумайте себе никнейм (псевдоним). Никнейм - это имя которое будут видеть другие пользователи</string>
+    <string name="authorization_text1">Введите логин и пароль</string>
+    <string name="authorization_text2">Эти данные Вы указывали при регистрации. Авторизация необходима для продолжения работы с приложением</string>
 
     <!--регистрация и авторизация-->
     <string name="login_hint">Логин</string>
@@ -23,7 +26,7 @@
     <string name="ws_connection_process">Выполняется вход</string>
 
     <string name="recover_button"><u>уже есть аккаунт?</u></string>
-    <string name="link"><u>MPGP Project</u></string>
+    <string name="link"><u>MPGP Project on GitHub</u></string>
 
     <!--подключение к сокет серверу-->
     <string name="connection_header">Выберите сервер для подключения</string>
@@ -37,6 +40,7 @@
     <string name="nickname_exists">Указанный никнейм уже существует</string>
     <string name="bad_token">Что-то пошло не так... Повторите процедуру авторизации</string>
     <string name="client_already_online">Клиент уже подключен!</string>
+    <string name="incorrect_pair">Некорректная пара логин/пароль</string>
 
     <!--Диалоги-->
     <string name="progress_dialog_msg">Пожалуйста, подождите...</string>
