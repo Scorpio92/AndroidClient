@@ -17,5 +17,44 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="TextAppearence.Hint" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:fontFamily">"sans-serif-condensed"</item>
+    </style>
+
+    <style name="TextAppearence.Error" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:fontFamily">"sans-serif-condensed"</item>
+    </style>
+
+    <style name="TextInputLayout" parent="Widget.Design.TextInputLayout">
+        <item name="hintTextAppearance">@style/TextAppearence.Hint</item>
+        <item name="errorTextAppearance">@style/TextAppearence.Error</item>
+    </style>
+
+    <style name="TextViewBaseStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:fontFamily">"sans-serif-condensed"</item>
+    </style>
+
+    <style name="TextViewHintStyle" parent="TextViewBaseStyle">
+        <item name="android:textSize">@dimen/sp_12</item>
+        <item name="android:textColor">@color/colorDarkGrey</item>
+    </style>
+
+    <style name="TextViewUrlStyle" parent="TextViewHintStyle">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="ButtonBase" parent="Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/sp_14</item>
+        <item name="android:fontFamily">"sans-serif-condensed"</item>
+        <item name="android:background">@drawable/transparent_pressed_background</item>
+        <item name="android:padding">@dimen/dp_8</item>
+    </style>
 
 </resources>

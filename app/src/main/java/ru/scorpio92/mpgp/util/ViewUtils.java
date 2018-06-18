@@ -78,7 +78,7 @@ public class ViewUtils {
         AlertDialog.Builder builder = getDialogBuilder(context, title, context.getString(R.string.progress_dialog_msg));
         builder.setCancelable(false);
         ProgressBar progressBar = new ProgressBar(context);
-        progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, android.R.color.holo_red_light), PorterDuff.Mode.MULTIPLY);
+        progressBar.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         layoutParams.gravity = Gravity.CENTER;
         progressBar.setLayoutParams(layoutParams);

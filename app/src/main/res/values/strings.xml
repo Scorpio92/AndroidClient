@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">MPGP Chat</string>
 
+    <!--Текст который показывается при регистрации и авторизации-->
+    <string name="welcome_text1">Добро пожаловать в MPGP Android client !</string>
+    <string name="welcome_text2">Если у Вас ещё нет акаунта, пожалуйста, пройдите процедуру регистрации</string>
+    <string name="registration_text1">Регистрация не займёт у Вас много времени.\nПридумайте логин и пароль. Логин не короче 3-х символов, пароль - не менее 8-ми любых символов</string>
+    <string name="registration_text2">Почти всё !\nПридумайте себе никнейм (псевдоним). Никнейм - это имя которое будут видеть другие пользователи</string>
+    <string name="authorization_text">Для продолжения работы с приложением необходимо авторизоваться. Введите логин и пароль указанные при регистрации</string>
+
     <!--регистрация и авторизация-->
     <string name="login_hint">Логин</string>
     <string name="password_hint">Пароль</string>

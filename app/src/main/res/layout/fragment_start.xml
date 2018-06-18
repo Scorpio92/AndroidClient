@@ -3,6 +3,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,36 +12,62 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/actionContainer"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_14">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextViewBaseStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:textSize="@dimen/sp_16"
+                android:text="@string/welcome_text1" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextViewBaseStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/welcome_text2" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/actionContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="visible">
+            android:orientation="vertical">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/regBtn"
-                style="@style/Base.Widget.AppCompat.Button"
+                style="@style/ButtonBase"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/reg_button"
-                android:textSize="@dimen/sp_14" />
+                android:text="@string/reg_button" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/authBtn"
+                style="@style/TextViewUrlStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12"
-                android:text="@string/recover_button"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/sp_12" />
+                android:text="@string/recover_button" />
 
         </android.support.v7.widget.LinearLayoutCompat>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/link"
+            style="@style/TextViewUrlStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -49,7 +76,7 @@
             android:gravity="center"
             android:padding="@dimen/dp_12"
             android:text="@string/link"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textSize="@dimen/sp_14" />
 
     </RelativeLayout>
 
