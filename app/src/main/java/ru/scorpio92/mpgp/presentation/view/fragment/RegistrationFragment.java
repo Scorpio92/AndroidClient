@@ -73,8 +73,14 @@ public class RegistrationFragment extends BaseFragment<IRegistrationPresenter> i
 
     @Override
     public void onSuccessRegistration() {
-        if (listener != null)
-            listener.onFragmentResut(IFragmentListener.ResultCode.SUCCESS_REGISTRATION);
+        lpContainer.setVisibility(View.GONE);
+        nickContainer.setVisibility(View.GONE);
+        if(getContext() != null)
+        ViewUtils.createAndShowAlertDialog(getContext(), getString(R.string.registration_success_title), getString(R.string.registration_success_msg), true, (dialog, which) -> {
+            dialog.dismiss();
+            if (listener != null)
+                listener.onFragmentResut(IFragmentListener.ResultCode.SUCCESS_REGISTRATION);
+        });
     }
 
     @NonNull

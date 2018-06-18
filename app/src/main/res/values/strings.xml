@@ -46,6 +46,8 @@
     <string name="progress_dialog_msg">Пожалуйста, подождите...</string>
     <string name="exit_dialog_title">Выход</string>
     <string name="exit_dialog_msg">Вы действительно хотите выйти?</string>
+    <string name="registration_success_title">Огонь!</string>
+    <string name="registration_success_msg">Ваша, учетная запись была успешно создана! Перед началом использования приложения необходимо авторизоваться. Нажмите ОК для продолжения </string>
 
 
 </resources>
