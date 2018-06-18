@@ -11,7 +11,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/text"
+            android:src="@mipmap/logo"
+            android:paddingBottom="@dimen/dp_18"/>
+
         <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/actionContainer"
